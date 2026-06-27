@@ -205,8 +205,8 @@ function Search({ goHome, goThread }) {
   const results = q.trim() ? index.map(item => ({ item, score: score(item, q) })).filter(x => x.score > 0).sort((a,b)=>b.score-a.score).slice(0,30).map(x=>x.item) : [];
   return (
     <SafeAreaView style={styles.safe}>
-      <Header title="Search" subtitleText="Find threads, segments, and verse anchors." onBack={goHome} />
-      <View style={styles.searchWrap}><TextInput value={q} onChangeText={setQ} placeholder="Search…" autoFocus style={styles.searchInput} /></View>
+      <Header title="Verse Explorer"subtitleText="Search verses, themes, threads, and biblical connections." onBack={goHome} />
+      <View style={styles.searchWrap}><TextInput value={q} onChangeText={setQ} placeholder="Search verses, themes, or threads..." autoFocus style={styles.searchInput} /></View>
       <ScrollView contentContainerStyle={styles.content}>
         {results.map((r, i) => (
           <TouchableOpacity key={i} onPress={() => goThread(r.id, r.idx)} style={styles.listItem}>
@@ -215,7 +215,7 @@ function Search({ goHome, goThread }) {
             <Text style={styles.listMeta}>{r.meta}</Text>
           </TouchableOpacity>
         ))}
-        {!q.trim() && <Text style={styles.emptyText}>Type a word like temple, exodus, sonship, covenant, sacrifice, or creation.</Text>}
+        {!q.trim() && <Text style={styles.emptyText}>Try Genesis 22, Exodus 12, John 1:14, temple, covenant, or lamb.</Text>}
         {q.trim() && results.length === 0 && <Text style={styles.emptyText}>No matches.</Text>}
       </ScrollView>
     </SafeAreaView>

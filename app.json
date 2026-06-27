@@ -16,7 +16,10 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.timberlake.biblethreads"
+      "bundleIdentifier": "com.timberlake.biblethreads",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "package": "com.timberlake.biblethreads"
