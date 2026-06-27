@@ -191,17 +191,42 @@ function Verse({ v, color }) {
 function Search({ goHome, goThread, goVerse }) {
   const [q, setQ] = useState('');
   const index = useMemo(() => {
-    const rows = [];
-    for (const id of order) {
-      const t = THREADS[id];
-      rows.push({ kind: 'Thread', title: t.name, meta: t.outcome, id, idx: 0, text: `${t.name} ${t.outcome} ${t.intro}` });
-      t.segments.forEach((seg, idx) => {
-        rows.push({ kind: 'Segment', title: seg.title, meta: `${t.name} • ${seg.label}`, id, idx, text: `${seg.title} ${seg.label} ${seg.tag} ${(seg.body || []).join(' ')}` });
-        (seg.verses || []).forEach(v => rows.push({ kind: 'Verse', title: v.ref, meta: `${t.name} • ${seg.label}`, id, idx, text: `${v.ref} ${v.text} ${v.why} ${v.soWhat}` }));
+  const rows = [];
+
+  for (const id of order) {
+    const t = THREADS[id];
+
+    rows.push({ kind: 'Thread', title: t.name, meta: t.outcome, id, idx: 0, text: `${t.name} ${t.outcome}` });
+
+    t.segments.forEach((seg, idx) => {
+      rows.push({ kind: 'Segment', title: seg.title, meta: `${t.name} • ${seg.label}`, id, idx, text: `${seg.title} ${seg.summary || ''}` });
+
+      (seg.verses || []).forEach(v => {
+        rows.push({ kind: 'Verse', title: v.ref, meta: `${t.name} • ${seg.label}`, id, idx, text: `${v.ref} ${v.note || ''}` });
+      });
+    });
+
+    const pathGroups = READING_PATHS[id];
+
+if (pathGroups) {
+  Object.values(pathGroups).forEach(pathGroup => {
+    if (Array.isArray(pathGroup)) {
+      pathGroup.forEach(reading => {
+        rows.push({
+          kind: 'Reading',
+          title: reading.ref,
+          meta: `${t.name} • Reading Path`,
+          id,
+          idx: 0,
+          text: `${reading.ref} ${reading.note || ''}`,
+        });
       });
     }
-    return rows;
-  }, []);
+  });
+}
+  }
+  return rows;
+}, []);
   const results = q.trim() ? index.map(item => ({ item, score: score(item, q) })).filter(x => x.score > 0).sort((a,b)=>b.score-a.score).slice(0,30).map(x=>x.item) : [];
   return (
     <SafeAreaView style={styles.safe}>
@@ -222,7 +247,7 @@ function Search({ goHome, goThread, goVerse }) {
   );
 }
  
-
+  
 function VerseDetail({ verse, goHome, goThread }) {
   if (!verse) return null;
 
@@ -251,17 +276,33 @@ function VerseDetail({ verse, goHome, goThread }) {
     </SafeAreaView>
   );
 }
+function normalizeSearchText(value) {
+  return (value || '')
+    .toLowerCase()
+    .replace(/\bgenesis\b/g, 'gen')
+    .replace(/\bexodus\b/g, 'ex')
+    .replace(/\brevelation\b/g, 'rev')
+    .replace(/\bephesians\b/g, 'eph')
+    .replace(/\./g, '');
+}
+
 function score(item, q) {
-  const parts = q.toLowerCase().split(/\s+/).filter(Boolean);
-  const title = (item.title || '').toLowerCase();
-  const meta = (item.meta || '').toLowerCase();
-  const text = (item.text || '').toLowerCase();
+  const parts = normalizeSearchText(q).split(/\s+/).filter(Boolean);
+  const title = normalizeSearchText(item.title);
+  const meta = normalizeSearchText(item.meta);
+  const text = normalizeSearchText(item.text);
+
   let s = 0;
+
   for (const p of parts) {
+    const matched = title.includes(p) || meta.includes(p) || text.includes(p);
+    if (!matched) return 0;
+
     if (title.includes(p)) s += 8;
     if (meta.includes(p)) s += 4;
     if (text.includes(p)) s += 1;
   }
+
   return s;
 }
 
