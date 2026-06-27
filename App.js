@@ -188,7 +188,7 @@ function Verse({ v, color }) {
   );
 }
 
-function Search({ goHome, goThread }) {
+function Search({ goHome, goThread, goVerse }) {
   const [q, setQ] = useState('');
   const index = useMemo(() => {
     const rows = [];
@@ -209,7 +209,7 @@ function Search({ goHome, goThread }) {
       <View style={styles.searchWrap}><TextInput value={q} onChangeText={setQ} placeholder="Search verses, themes, or threads..." autoFocus style={styles.searchInput} /></View>
       <ScrollView contentContainerStyle={styles.content}>
         {results.map((r, i) => (
-          <TouchableOpacity key={i} onPress={() => goThread(r.id, r.idx)} style={styles.listItem}>
+          <TouchableOpacity key={i} onPress={() => goVerse(r)} style={styles.listItem}>
             <Text style={styles.kicker}>{r.kind}</Text>
             <Text style={styles.listTitle}>{r.title}</Text>
             <Text style={styles.listMeta}>{r.meta}</Text>
@@ -217,6 +217,36 @@ function Search({ goHome, goThread }) {
         ))}
         {!q.trim() && <Text style={styles.emptyText}>Try Genesis 22, Exodus 12, John 1:14, temple, covenant, or lamb.</Text>}
         {q.trim() && results.length === 0 && <Text style={styles.emptyText}>No matches.</Text>}
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+ 
+
+function VerseDetail({ verse, goHome, goThread }) {
+  if (!verse) return null;
+
+  return (
+    <SafeAreaView style={styles.safe}>
+      <Header title={verse.title} subtitleText={verse.meta} onBack={goHome} />
+
+      <ScrollView contentContainerStyle={styles.content}>
+        <View style={styles.card}>
+          <Text style={styles.kicker}>Verse Detail</Text>
+          <Text style={styles.listTitle}>{verse.title}</Text>
+          <Text style={styles.listMeta}>{verse.meta}</Text>
+        </View>
+
+        <View style={styles.card}>
+          <Text style={styles.kicker}>Why this matters</Text>
+          <Text style={styles.expandedText}>
+            This verse has been connected to one of the Bible Threads. Open the full thread to explore the larger biblical pattern.
+          </Text>
+        </View>
+
+        <TouchableOpacity style={styles.primaryBtn} onPress={() => goThread(verse.id, verse.idx)}>
+          <Text style={styles.primaryBtnText}>Open Full Thread Segment</Text>
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
@@ -241,9 +271,13 @@ export default function App() {
   const goOverview = id => setScreen({ name: 'overview', id });
   const goThread = (id, idx=0) => setScreen({ name: 'thread', id, idx });
   const goSearch = () => setScreen({ name: 'search' });
+  const goVerse = (verse) => setScreen({ name: 'verse', verse });
   if (screen.name === 'overview') return <Overview id={screen.id} goHome={goHome} goThread={goThread} />;
   if (screen.name === 'thread') return <Thread id={screen.id} startIndex={screen.idx} goHome={goHome} goOverview={goOverview} />;
-  if (screen.name === 'search') return <Search goHome={goHome} goThread={goThread} />;
+  if (screen.name === 'search')
+    return <Search goHome={goHome} goThread={goThread} goVerse={goVerse} />;
+  if (screen.name === 'verse')
+    return <VerseDetail verse={screen.verse} goHome={goHome} goThread={goThread} />;
   return <Home goOverview={goOverview} goThread={goThread} goSearch={goSearch} />;
 }
 
