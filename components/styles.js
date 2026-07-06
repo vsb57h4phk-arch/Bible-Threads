@@ -46,6 +46,7 @@ export const styles = StyleSheet.create({
   pill: { backgroundColor: '#faf9f7', borderWidth: 1, borderColor: '#e1ded8', borderRadius: 999, paddingHorizontal: 10, paddingVertical: 6 },
   pillText: { fontSize: 12, fontWeight: '800', color: '#3a3a3a' },
   verseCard: { backgroundColor: '#fff', borderWidth: 1, borderColor: '#e8e6e2', borderLeftWidth: 4, borderRadius: 16, padding: 13, marginBottom: 9 },
+  focusedVerseCard: { borderColor: '#c6b37f', backgroundColor: '#fffdf6' },
   verseRef: { fontSize: 13, fontWeight: '900', color: '#1e1e1e' },
   verseText: { fontSize: 13, color: '#555', lineHeight: 18, marginTop: 4 },
   expanded: { marginTop: 9, paddingTop: 9, borderTopWidth: 1, borderTopColor: '#e8e6e2' },
@@ -58,5 +59,7 @@ export const styles = StyleSheet.create({
   disabled: { opacity: .35 },
   searchWrap: { padding: 16, borderBottomWidth: 1, borderBottomColor: '#e8e6e2' },
   searchInput: { backgroundColor: '#fff', borderWidth: 1, borderColor: '#e8e6e2', borderRadius: 16, paddingHorizontal: 14, paddingVertical: 13, fontSize: 16 },
+  searchSnippet: { fontSize: 13, color: '#444', lineHeight: 18, marginTop: 6 },
+  highlightText: { backgroundColor: '#fff1a8', color: '#1e1e1e' },
   emptyText: { fontSize: 14, color: '#6b6b6b', lineHeight: 20, padding: 12 }
 });

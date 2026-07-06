@@ -7,7 +7,7 @@ import { styles } from '../components/styles';
 import { THREADS, getPrompts, getReadings, stripThreadName, themeColor } from '../lib/data';
 
 export function Thread({ navigation, route }) {
-  const { id, idx: startIndex = 0 } = route.params;
+  const { id, idx: startIndex = 0, verseRef } = route.params;
   const t = THREADS[id];
   const [idx, setIdx] = useState(startIndex || 0);
   useEffect(() => {
@@ -42,7 +42,7 @@ export function Thread({ navigation, route }) {
         </View>
 
         <Text style={styles.bigLabel}>Verse anchors</Text>
-        {(seg.verses || []).map((v, i) => <Verse key={i} v={v} color={color} />)}
+        {(seg.verses || []).map((v, i) => <Verse key={i} v={v} color={color} focused={v.ref === verseRef} />)}
 
         <Text style={styles.bigLabel}>Study lens</Text>
         <View style={styles.panelSoft}>
