@@ -3,12 +3,13 @@ import { SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-na
 import { Header } from '../components/Header';
 import { styles } from '../components/styles';
 
-export function VerseDetail({ verse, goHome, goThread }) {
+export function VerseDetail({ navigation, route }) {
+  const { verse } = route.params;
   if (!verse) return null;
 
   return (
     <SafeAreaView style={styles.safe}>
-      <Header title={verse.title} subtitleText={verse.meta} onBack={goHome} />
+      <Header title={verse.title} subtitleText={verse.meta} onBack={() => navigation.popToTop()} />
 
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.card}>
@@ -35,7 +36,7 @@ export function VerseDetail({ verse, goHome, goThread }) {
           </Text>
         </View>
 
-        <TouchableOpacity style={styles.primaryBtn} onPress={() => goThread(verse.id, verse.idx)}>
+        <TouchableOpacity style={styles.primaryBtn} onPress={() => navigation.navigate('Thread', { id: verse.id, idx: verse.idx })}>
           <Text style={styles.primaryBtnText}>Open Full Thread Segment</Text>
         </TouchableOpacity>
       </ScrollView>

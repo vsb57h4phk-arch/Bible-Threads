@@ -5,14 +5,14 @@ import { Header } from '../components/Header';
 import { styles } from '../components/styles';
 import { THREADS, icon, order, subtitle, themeColor } from '../lib/data';
 
-export function Home({ goOverview, goThread, goSearch }) {
+export function Home({ navigation }) {
   return (
     <SafeAreaView style={styles.safe}>
       <ExpoStatusBar style="dark" />
       <Header
         title="Bible Threads"
         subtitleText="A real app shell for the thread-first biblical theology database."
-        right={<TouchableOpacity onPress={goSearch} style={styles.searchTop}><Text style={styles.searchTopText}>Search</Text></TouchableOpacity>}
+        right={<TouchableOpacity onPress={() => navigation.navigate('Search')} style={styles.searchTop}><Text style={styles.searchTopText}>Search</Text></TouchableOpacity>}
       />
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.notice}>
@@ -33,8 +33,8 @@ export function Home({ goOverview, goThread, goSearch }) {
               </View>
               <Text style={styles.cardDesc}>{t.outcome}</Text>
               <View style={styles.actionRow}>
-                <TouchableOpacity onPress={() => goThread(id, 0)} style={[styles.primary, { backgroundColor: '#2b2b2b' }]}><Text style={styles.primaryText}>Enter</Text></TouchableOpacity>
-                <TouchableOpacity onPress={() => goOverview(id)} style={styles.secondary}><Text style={styles.secondaryText}>Overview</Text></TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('Thread', { id, idx: 0 })} style={[styles.primary, { backgroundColor: '#2b2b2b' }]}><Text style={styles.primaryText}>Enter</Text></TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('Overview', { id })} style={styles.secondary}><Text style={styles.secondaryText}>Overview</Text></TouchableOpacity>
               </View>
             </View>
           );

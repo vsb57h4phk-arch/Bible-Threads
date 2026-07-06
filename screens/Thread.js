@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { Header } from '../components/Header';
 import { Pill } from '../components/Pill';
@@ -6,9 +6,13 @@ import { Verse } from '../components/Verse';
 import { styles } from '../components/styles';
 import { THREADS, getPrompts, getReadings, stripThreadName, themeColor } from '../lib/data';
 
-export function Thread({ id, startIndex, goHome, goOverview }) {
+export function Thread({ navigation, route }) {
+  const { id, idx: startIndex = 0 } = route.params;
   const t = THREADS[id];
   const [idx, setIdx] = useState(startIndex || 0);
+  useEffect(() => {
+    setIdx(startIndex || 0);
+  }, [id, startIndex]);
   const seg = t.segments[idx];
   const color = themeColor(id);
   const prev = () => setIdx(Math.max(0, idx - 1));
@@ -18,8 +22,8 @@ export function Thread({ id, startIndex, goHome, goOverview }) {
       <Header
         title={stripThreadName(t.name)}
         subtitleText={`${idx + 1} of ${t.segments.length} • ${seg.label}`}
-        onBack={goHome}
-        right={<TouchableOpacity onPress={() => goOverview(id)} style={styles.searchTop}><Text style={styles.searchTopText}>Overview</Text></TouchableOpacity>}
+        onBack={() => navigation.popToTop()}
+        right={<TouchableOpacity onPress={() => navigation.navigate('Overview', { id })} style={styles.searchTop}><Text style={styles.searchTopText}>Overview</Text></TouchableOpacity>}
       />
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.segmentNav}>
