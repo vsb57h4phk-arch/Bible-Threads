@@ -217,7 +217,7 @@ function Search({ goHome, goThread, goVerse }) {
 });
     const pathGroups = READING_PATHS[id];
 
- (pathGroups) {
+ if (pathGroups) {
   Object.values(pathGroups).forEach(pathGroup => {
     if (Array.isArray(pathGroup)) {
       pathGroup.forEach(reading => {
