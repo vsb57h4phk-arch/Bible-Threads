@@ -188,141 +188,50 @@ function Verse({ v, color }) {
   );
 }
 
-function Search({ goHome, goThread, goVerse }) {
+function Search({ goHome, goThread }) {
   const [q, setQ] = useState('');
   const index = useMemo(() => {
-  const rows = [];
-
-  for (const id of order) {
-    const t = THREADS[id];
-
-    rows.push({ kind: 'Thread', title: t.name, meta: t.outcome, id, idx: 0, text: `${t.name} ${t.outcome}` });
-
-    t.segments.forEach((seg, idx) => {
-      rows.push({ kind: 'Segment', title: seg.title, meta: `${t.name} • ${seg.label}`, id, idx, text: `${seg.title} ${seg.summary || ''}` });
-
-      (seg.verses || []).forEach(v => {
-        rows.push({ kind: 'Verse', title: v.ref, meta: `${t.name} • ${seg.label}`, id, idx, text: `${v.ref} ${v.note || ''}` });
-      });
-    });
-(seg.concepts || []).forEach(c => {
-  rows.push({
-    kind: 'Concept',
-    title: c.name,
-    meta: `${t.name} • ${seg.label}`,
-    id,
-    idx,
-    text: `${c.name} ${c.description || ''}`
-  });
-});
-    const pathGroups = READING_PATHS[id];
-
- (pathGroups) {
-  Object.values(pathGroups).forEach(pathGroup => {
-    if (Array.isArray(pathGroup)) {
-      pathGroup.forEach(reading => {
-        rows.push({
-          kind: 'Reading',
-          title: reading.ref,
-          meta: `${t.name} • Reading Path`,
-          id,
-          idx: 0,
-          text: `${reading.ref} ${reading.note || ''}`,
-        });
+    const rows = [];
+    for (const id of order) {
+      const t = THREADS[id];
+      rows.push({ kind: 'Thread', title: t.name, meta: t.outcome, id, idx: 0, text: `${t.name} ${t.outcome} ${t.intro}` });
+      t.segments.forEach((seg, idx) => {
+        rows.push({ kind: 'Segment', title: seg.title, meta: `${t.name} • ${seg.label}`, id, idx, text: `${seg.title} ${seg.label} ${seg.tag} ${(seg.body || []).join(' ')}` });
+        (seg.verses || []).forEach(v => rows.push({ kind: 'Verse', title: v.ref, meta: `${t.name} • ${seg.label}`, id, idx, text: `${v.ref} ${v.text} ${v.why} ${v.soWhat}` }));
       });
     }
-  });
-}
-  }
-  return rows;
-}, []);
+    return rows;
+  }, []);
   const results = q.trim() ? index.map(item => ({ item, score: score(item, q) })).filter(x => x.score > 0).sort((a,b)=>b.score-a.score).slice(0,30).map(x=>x.item) : [];
   return (
     <SafeAreaView style={styles.safe}>
-      <Header title="Verse Explorer"subtitleText="Search verses, themes, threads, and biblical connections." onBack={goHome} />
-      <View style={styles.searchWrap}><TextInput value={q} onChangeText={setQ} placeholder="Search verses, themes, or threads..." autoFocus style={styles.searchInput} /></View>
+      <Header title="Search" subtitleText="Find threads, segments, and verse anchors." onBack={goHome} />
+      <View style={styles.searchWrap}><TextInput value={q} onChangeText={setQ} placeholder="Search…" autoFocus style={styles.searchInput} /></View>
       <ScrollView contentContainerStyle={styles.content}>
         {results.map((r, i) => (
-          <TouchableOpacity key={i} onPress={() => goVerse(r)} style={styles.listItem}>
+          <TouchableOpacity key={i} onPress={() => goThread(r.id, r.idx)} style={styles.listItem}>
             <Text style={styles.kicker}>{r.kind}</Text>
             <Text style={styles.listTitle}>{r.title}</Text>
             <Text style={styles.listMeta}>{r.meta}</Text>
           </TouchableOpacity>
         ))}
-        {!q.trim() && <Text style={styles.emptyText}>Try Genesis 22, Exodus 12, John 1:14, temple, covenant, or lamb.</Text>}
+        {!q.trim() && <Text style={styles.emptyText}>Type a word like temple, exodus, sonship, covenant, sacrifice, or creation.</Text>}
         {q.trim() && results.length === 0 && <Text style={styles.emptyText}>No matches.</Text>}
       </ScrollView>
     </SafeAreaView>
   );
 }
- 
-  
-function VerseDetail({ verse, goHome, goThread }) {
-  if (!verse) return null;
-
-  return (
-    <SafeAreaView style={styles.safe}>
-      <Header title={verse.title} subtitleText={verse.meta} onBack={goHome} />
-
-      <ScrollView contentContainerStyle={styles.content}>
-        <View style={styles.card}>
-          <Text style={styles.kicker}>Verse Detail</Text>
-          <Text style={styles.listTitle}>{verse.title}</Text>
-          <Text style={styles.listMeta}>{verse.meta}</Text>
-        </View>
-<View style={styles.card}>
-  <Text style={styles.kicker}>Connected Thread</Text>
-
-  <Text style={styles.listTitle}>
-    {verse.meta.split('•')[0].trim()}
-  </Text>
-
-  <Text style={styles.expandedText}>
-    This verse appears within the larger storyline of this thread.
-    Open the thread segment below to see how this passage fits into the broader biblical pattern.
-  </Text>
-</View>
-        <View style={styles.card}>
-          <Text style={styles.kicker}>Why this matters</Text>
-          <Text style={styles.expandedText}>
-            This verse has been connected to one of the Bible Threads. Open the full thread to explore the larger biblical pattern.
-          </Text>
-        </View>
-
-        <TouchableOpacity style={styles.primaryBtn} onPress={() => goThread(verse.id, verse.idx)}>
-          <Text style={styles.primaryBtnText}>Open Full Thread Segment</Text>
-        </TouchableOpacity>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
-function normalizeSearchText(value) {
-  return (value || '')
-    .toLowerCase()
-    .replace(/\bgenesis\b/g, 'gen')
-    .replace(/\bexodus\b/g, 'ex')
-    .replace(/\brevelation\b/g, 'rev')
-    .replace(/\bephesians\b/g, 'eph')
-    .replace(/\./g, '');
-}
-
 function score(item, q) {
-  const parts = normalizeSearchText(q).split(/\s+/).filter(Boolean);
-  const title = normalizeSearchText(item.title);
-  const meta = normalizeSearchText(item.meta);
-  const text = normalizeSearchText(item.text);
-
+  const parts = q.toLowerCase().split(/\s+/).filter(Boolean);
+  const title = (item.title || '').toLowerCase();
+  const meta = (item.meta || '').toLowerCase();
+  const text = (item.text || '').toLowerCase();
   let s = 0;
-
   for (const p of parts) {
-    const matched = title.includes(p) || meta.includes(p) || text.includes(p);
-    if (!matched) return 0;
-
     if (title.includes(p)) s += 8;
     if (meta.includes(p)) s += 4;
     if (text.includes(p)) s += 1;
   }
-
   return s;
 }
 
@@ -332,13 +241,9 @@ export default function App() {
   const goOverview = id => setScreen({ name: 'overview', id });
   const goThread = (id, idx=0) => setScreen({ name: 'thread', id, idx });
   const goSearch = () => setScreen({ name: 'search' });
-  const goVerse = (verse) => setScreen({ name: 'verse', verse });
   if (screen.name === 'overview') return <Overview id={screen.id} goHome={goHome} goThread={goThread} />;
   if (screen.name === 'thread') return <Thread id={screen.id} startIndex={screen.idx} goHome={goHome} goOverview={goOverview} />;
-  if (screen.name === 'search')
-    return <Search goHome={goHome} goThread={goThread} goVerse={goVerse} />;
-  if (screen.name === 'verse')
-    return <VerseDetail verse={screen.verse} goHome={goHome} goThread={goThread} />;
+  if (screen.name === 'search') return <Search goHome={goHome} goThread={goThread} />;
   return <Home goOverview={goOverview} goThread={goThread} goSearch={goSearch} />;
 }
 
