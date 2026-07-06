@@ -204,17 +204,18 @@ function Search({ goHome, goThread, goVerse }) {
       (seg.verses || []).forEach(v => {
         rows.push({ kind: 'Verse', title: v.ref, meta: `${t.name} • ${seg.label}`, id, idx, text: `${v.ref} ${v.note || ''}` });
       });
+
+      (seg.concepts || []).forEach(c => {
+        rows.push({
+          kind: 'Concept',
+          title: c.name,
+          meta: `${t.name} • ${seg.label}`,
+          id,
+          idx,
+          text: `${c.name} ${c.description || ''}`
+        });
+      });
     });
-(seg.concepts || []).forEach(c => {
-  rows.push({
-    kind: 'Concept',
-    title: c.name,
-    meta: `${t.name} • ${seg.label}`,
-    id,
-    idx,
-    text: `${c.name} ${c.description || ''}`
-  });
-});
     const pathGroups = READING_PATHS[id];
 
  if (pathGroups) {
