@@ -35,7 +35,7 @@ export function Thread({ navigation, route }) {
         </View>
         <View style={[styles.segmentCard, { borderTopColor: color }]}>
           <View style={styles.cardTitleRow}>
-            <Pill color={color}>{seg.tag}</Pill>
+            <Pill color={color} onPress={() => navigation.navigate('ConceptDetail', { conceptId: seg.tag })}>{seg.tag}</Pill>
           </View>
           <Text style={styles.segmentTitle}>{seg.title}</Text>
           {(seg.body || []).map((p, i) => <Text key={i} style={styles.bodyText}>{p}</Text>)}

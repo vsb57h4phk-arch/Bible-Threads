@@ -71,7 +71,7 @@ export function VerseDetail({ navigation, route }) {
       <ScrollView contentContainerStyle={styles.content}>
         <View style={[styles.segmentCard, { borderTopColor: color }]}>
           <View style={styles.cardTitleRow}>
-            <Pill color={color}>{verse.tag || seg.tag}</Pill>
+            <Pill color={color} onPress={() => navigation.navigate('ConceptDetail', { conceptId: verse.tag || seg.tag })}>{verse.tag || seg.tag}</Pill>
           </View>
           <Text style={styles.segmentTitle}>{verse.ref}</Text>
           <Text style={styles.listMeta}>{t.name} • {seg.label}</Text>
