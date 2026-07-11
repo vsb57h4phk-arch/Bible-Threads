@@ -3,7 +3,6 @@ import { SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-na
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import { Header } from '../components/Header';
 import { styles } from '../components/styles';
-import { THREADS, icon, order, subtitle, themeColor } from '../lib/data';
 
 export function Home({ navigation }) {
   return (
@@ -11,34 +10,28 @@ export function Home({ navigation }) {
       <ExpoStatusBar style="dark" />
       <Header
         title="Bible Threads"
-        subtitleText="A real app shell for the thread-first biblical theology database."
-        right={<TouchableOpacity onPress={() => navigation.navigate('Search')} style={styles.searchTop}><Text style={styles.searchTopText}>Search</Text></TouchableOpacity>}
+        subtitleText="Explore biblical threads that run from Genesis to Revelation and discover how God's redemptive story unfolds throughout Scripture."
       />
       <ScrollView contentContainerStyle={styles.content}>
-        <View style={styles.notice}>
-          <Text style={styles.noticeTitle}>Native app version</Text>
-          <Text style={styles.noticeText}>No browser wrapper. No horizontal desktop interface. This is rebuilt for phone taps, scrolling, and reading.</Text>
-        </View>
-        {order.map(id => {
-          const t = THREADS[id];
-          const color = themeColor(id);
-          return (
-            <View key={id} style={[styles.threadCard, { borderTopColor: color }]}>
-              <View style={styles.cardTitleRow}>
-                <View style={[styles.badge, { borderColor: color + '77', backgroundColor: '#fff' }]}><Text style={styles.badgeText}>{icon(id)}</Text></View>
-                <View style={{ flex: 1 }}>
-                  <Text style={styles.cardTitle}>{t.name}</Text>
-                  <Text style={styles.cardSub}>{subtitle(id)}</Text>
-                </View>
-              </View>
-              <Text style={styles.cardDesc}>{t.outcome}</Text>
-              <View style={styles.actionRow}>
-                <TouchableOpacity onPress={() => navigation.navigate('Thread', { id, idx: 0 })} style={[styles.primary, { backgroundColor: '#2b2b2b' }]}><Text style={styles.primaryText}>Enter</Text></TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate('Overview', { id })} style={styles.secondary}><Text style={styles.secondaryText}>Overview</Text></TouchableOpacity>
-              </View>
+        <TouchableOpacity onPress={() => navigation.navigate('Threads')} style={[styles.threadCard, { borderTopColor: '#2b2b2b' }]}>
+          <View style={styles.cardTitleRow}>
+            <View style={styles.badge}><Text style={styles.badgeText}>↦</Text></View>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.cardTitle}>Explore Threads</Text>
+              <Text style={styles.cardSub}>Discover major biblical themes across Scripture.</Text>
             </View>
-          );
-        })}
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => navigation.navigate('Lenses')} style={[styles.threadCard, { borderTopColor: '#2b2b2b' }]}>
+          <View style={styles.cardTitleRow}>
+            <View style={styles.badge}><Text style={styles.badgeText}>◈</Text></View>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.cardTitle}>Explore Lenses</Text>
+              <Text style={styles.cardSub}>Learn seven biblical lenses for understanding biblical connections.</Text>
+            </View>
+          </View>
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );

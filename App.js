@@ -2,6 +2,8 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Home } from './screens/Home';
+import { Threads } from './screens/Threads';
+import { Lenses } from './screens/Lenses';
 import { Overview } from './screens/Overview';
 import { Search } from './screens/Search';
 import { Thread } from './screens/Thread';
@@ -15,6 +17,8 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Home" component={Home} options={{ title: 'Bible Threads' }} />
+        <Stack.Screen name="Threads" component={Threads} options={{ title: 'Explore Threads' }} />
+        <Stack.Screen name="Lenses" component={Lenses} options={{ title: 'Explore Lenses' }} />
         <Stack.Screen name="Overview" component={Overview} options={{ title: 'Overview' }} />
         <Stack.Screen name="Thread" component={Thread} options={{ title: 'Thread' }} />
         <Stack.Screen name="Search" component={Search} options={{ title: 'Verse Explorer' }} />
