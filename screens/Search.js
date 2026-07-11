@@ -28,7 +28,12 @@ function HighlightedText({ children, query, style }) {
 
 function openResult(navigation, result) {
   if (result.kind === 'Verse') {
-    navigation.navigate('Thread', { id: result.id, idx: result.idx, verseRef: result.verseRef });
+    navigation.navigate('VerseDetail', {
+      id: result.id,
+      idx: result.idx,
+      verseIndex: result.verseIndex,
+      verseRef: result.verseRef
+    });
     return;
   }
 
