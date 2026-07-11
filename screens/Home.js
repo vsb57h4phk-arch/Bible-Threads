@@ -1,38 +1,85 @@
 import React from 'react';
-import { SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ImageBackground, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
-import { Header } from '../components/Header';
 import { styles } from '../components/styles';
+
+const homeHero = require('../assets/home-hero.jpeg');
 
 export function Home({ navigation }) {
   return (
     <SafeAreaView style={styles.safe}>
-      <ExpoStatusBar style="dark" />
-      <Header
-        title="Bible Threads"
-        subtitleText="Explore biblical threads that run from Genesis to Revelation and discover how God's redemptive story unfolds throughout Scripture."
-      />
-      <ScrollView contentContainerStyle={styles.content}>
-        <TouchableOpacity onPress={() => navigation.navigate('Threads')} style={[styles.threadCard, { borderTopColor: '#2b2b2b' }]}>
-          <View style={styles.cardTitleRow}>
-            <View style={styles.badge}><Text style={styles.badgeText}>↦</Text></View>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.cardTitle}>Explore Threads</Text>
-              <Text style={styles.cardSub}>Discover major biblical themes across Scripture.</Text>
-            </View>
+      <ExpoStatusBar style="light" />
+      <ScrollView contentContainerStyle={homeStyles.scrollContent}>
+        <ImageBackground source={homeHero} resizeMode="cover" style={homeStyles.hero} imageStyle={homeStyles.heroImage}>
+          <View style={homeStyles.heroOverlay} />
+          <View style={homeStyles.heroTextWrap}>
+            <Text style={homeStyles.heroTitle}>Bible Threads</Text>
+            <Text style={homeStyles.heroDescription}>
+              Explore biblical threads that run from Genesis to Revelation and discover how God's redemptive story unfolds throughout Scripture.
+            </Text>
           </View>
-        </TouchableOpacity>
+        </ImageBackground>
 
-        <TouchableOpacity onPress={() => navigation.navigate('Lenses')} style={[styles.threadCard, { borderTopColor: '#2b2b2b' }]}>
-          <View style={styles.cardTitleRow}>
-            <View style={styles.badge}><Text style={styles.badgeText}>◈</Text></View>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.cardTitle}>Explore Lenses</Text>
-              <Text style={styles.cardSub}>Learn seven biblical lenses for understanding biblical connections.</Text>
+        <View style={styles.content}>
+          <TouchableOpacity onPress={() => navigation.navigate('Threads')} style={[styles.threadCard, { borderTopColor: '#2b2b2b' }]}>
+            <View style={styles.cardTitleRow}>
+              <View style={styles.badge}><Text style={styles.badgeText}>↦</Text></View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.cardTitle}>Explore Threads</Text>
+                <Text style={styles.cardSub}>Discover major biblical themes across Scripture.</Text>
+              </View>
             </View>
-          </View>
-        </TouchableOpacity>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => navigation.navigate('Lenses')} style={[styles.threadCard, { borderTopColor: '#2b2b2b' }]}>
+            <View style={styles.cardTitleRow}>
+              <View style={styles.badge}><Text style={styles.badgeText}>◈</Text></View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.cardTitle}>Explore Lenses</Text>
+                <Text style={styles.cardSub}>Learn seven biblical lenses for understanding biblical connections.</Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
 }
+
+const homeStyles = StyleSheet.create({
+  scrollContent: {
+    paddingBottom: 48,
+  },
+  hero: {
+    width: '100%',
+    height: 330,
+    justifyContent: 'flex-end',
+    overflow: 'hidden',
+    borderBottomLeftRadius: 24,
+    borderBottomRightRadius: 24,
+  },
+  heroImage: {
+    borderBottomLeftRadius: 24,
+    borderBottomRightRadius: 24,
+  },
+  heroOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.38)',
+  },
+  heroTextWrap: {
+    paddingHorizontal: 20,
+    paddingBottom: 28,
+  },
+  heroTitle: {
+    color: '#fff',
+    fontSize: 34,
+    lineHeight: 40,
+    fontWeight: '900',
+  },
+  heroDescription: {
+    color: '#fff',
+    fontSize: 15,
+    lineHeight: 22,
+    marginTop: 8,
+  },
+});
