@@ -52,7 +52,7 @@ const homeStyles = StyleSheet.create({
   },
   hero: {
     width: '100%',
-    height: 330,
+    height: 430,
     justifyContent: 'flex-end',
     overflow: 'hidden',
     borderBottomLeftRadius: 24,
@@ -64,7 +64,7 @@ const homeStyles = StyleSheet.create({
   },
   heroOverlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0, 0, 0, 0.38)',
+    backgroundColor: 'rgba(0, 0, 0, 0.18)',
   },
   heroTextWrap: {
     paddingHorizontal: 20,
