@@ -89,13 +89,18 @@ export function VerseDetail({ navigation, route }) {
           <Text style={styles.listMeta}>{t.name} • {seg.label}</Text>
           <Text style={styles.listTitle}>{seg.title}</Text>
           {verse.text ? <Text style={styles.bodyText}>{verse.text}</Text> : null}
-          {verse.note ? <Text style={styles.bodyText}>{verse.note}</Text> : null}
         </View>
 
         <View style={styles.panel}>
           <Text style={styles.sectionLabel}>How this connects</Text>
-          <Text style={styles.bodyText}>{seg.title}</Text>
-          {(seg.body || []).map((p, i) => <Text key={i} style={styles.expandedText}>{p}</Text>)}
+          {verse.supporting ? (
+            <Text style={styles.bodyText}>{verse.note}</Text>
+          ) : (
+            <>
+              <Text style={styles.bodyText}>{seg.title}</Text>
+              {(seg.body || []).map((p, i) => <Text key={i} style={styles.expandedText}>{p}</Text>)}
+            </>
+          )}
         </View>
 
         {verse.why ? (
