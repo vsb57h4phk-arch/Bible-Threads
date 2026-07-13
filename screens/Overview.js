@@ -10,7 +10,7 @@ export function Overview({ navigation, route }) {
   const color = themeColor(id);
   return (
     <SafeAreaView style={styles.safe}>
-      <Header title={t.name} subtitleText={subtitle(id)} onBack={() => navigation.popToTop()} />
+      <Header title={t.name} subtitleText={subtitle(id)} onBack={() => navigation.canGoBack() ? navigation.goBack() : navigation.navigate('Home')} />
       <ScrollView contentContainerStyle={styles.content}>
         <View style={[styles.panel, { borderTopColor: color }]}>
           <Text style={styles.sectionLabel}>What this thread is doing</Text>

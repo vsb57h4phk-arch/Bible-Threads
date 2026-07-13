@@ -12,7 +12,7 @@ export function Threads({ navigation }) {
       <Header
         title="Bible Threads"
         subtitleText="A real app shell for the thread-first biblical theology database."
-        onBack={() => navigation.popToTop()}
+        onBack={() => navigation.canGoBack() ? navigation.goBack() : navigation.navigate('Home')}
         right={<TouchableOpacity onPress={() => navigation.navigate('Search')} style={styles.searchTop}><Text style={styles.searchTopText}>Search</Text></TouchableOpacity>}
       />
       <ScrollView contentContainerStyle={styles.content}>

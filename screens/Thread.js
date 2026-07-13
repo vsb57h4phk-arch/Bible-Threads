@@ -22,7 +22,7 @@ export function Thread({ navigation, route }) {
       <Header
         title={stripThreadName(t.name)}
         subtitleText={`${idx + 1} of ${t.segments.length} • ${seg.label}`}
-        onBack={() => navigation.popToTop()}
+        onBack={() => navigation.canGoBack() ? navigation.goBack() : navigation.navigate('Home')}
         right={<TouchableOpacity onPress={() => navigation.navigate('Overview', { id })} style={styles.searchTop}><Text style={styles.searchTopText}>Overview</Text></TouchableOpacity>}
       />
       <ScrollView contentContainerStyle={styles.content}>

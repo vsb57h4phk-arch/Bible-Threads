@@ -61,7 +61,7 @@ export function Search({ navigation }) {
   const results = useMemo(() => search(index, q), [index, q]);
   return (
     <SafeAreaView style={styles.safe}>
-      <Header title="Verse Explorer" subtitleText="Search verses, themes, threads, and biblical connections." onBack={() => navigation.popToTop()} />
+      <Header title="Verse Explorer" subtitleText="Search verses, themes, threads, and biblical connections." onBack={() => navigation.canGoBack() ? navigation.goBack() : navigation.navigate('Home')} />
       <View style={styles.searchWrap}><TextInput value={q} onChangeText={setQ} placeholder="Search verses, themes, or threads..." autoFocus style={styles.searchInput} /></View>
       <ScrollView contentContainerStyle={styles.content}>
         {results.map((r, i) => (

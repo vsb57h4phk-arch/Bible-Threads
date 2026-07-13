@@ -20,7 +20,7 @@ export function Lenses({ navigation }) {
       <Header
         title="Explore Lenses"
         subtitleText="Learn seven biblical lenses for understanding biblical connections."
-        onBack={() => navigation.popToTop()}
+        onBack={() => navigation.canGoBack() ? navigation.goBack() : navigation.navigate('Home')}
       />
       <ScrollView contentContainerStyle={styles.content}>
         {LENS_ORDER.map(id => {

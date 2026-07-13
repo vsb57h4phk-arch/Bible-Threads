@@ -64,7 +64,7 @@ export function VerseDetail({ navigation, route }) {
   if (!t || !seg || !verse) {
     return (
       <SafeAreaView style={styles.safe}>
-        <Header title="Verse Detail" subtitleText="Bible Threads" onBack={() => navigation.popToTop()} />
+        <Header title="Verse Detail" subtitleText="Bible Threads" onBack={() => navigation.canGoBack() ? navigation.goBack() : navigation.navigate('Home')} />
         <ScrollView contentContainerStyle={styles.content}>
           <View style={styles.panel}>
             <Text style={styles.sectionLabel}>Verse Detail</Text>
@@ -77,7 +77,7 @@ export function VerseDetail({ navigation, route }) {
 
   return (
     <SafeAreaView style={styles.safe}>
-      <Header title={verse.ref} subtitleText={`${stripThreadName(t.name)} • ${seg.label}`} onBack={() => navigation.popToTop()} />
+      <Header title={verse.ref} subtitleText={`${stripThreadName(t.name)} • ${seg.label}`} onBack={() => navigation.canGoBack() ? navigation.goBack() : navigation.navigate('Home')} />
 
       <ScrollView contentContainerStyle={styles.content}>
         <View style={[styles.segmentCard, { borderTopColor: color }]}>
