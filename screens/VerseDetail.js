@@ -5,16 +5,26 @@ import { Pill } from '../components/Pill';
 import { styles } from '../components/styles';
 import { THREADS, stripThreadName, themeColor } from '../lib/data';
 
-function findVerse(seg, verseIndex, verseRef) {
+function findVerse(seg, verseIndex, supportingIndex, verseRef) {
   const verses = seg?.verses || [];
+  const supportingVerses = seg?.supportingVerses || [];
   const numericIndex = Number(verseIndex);
+  const numericSupportingIndex = Number(supportingIndex);
+
+  if (supportingIndex !== undefined && Number.isInteger(numericSupportingIndex) && numericSupportingIndex >= 0 && numericSupportingIndex < supportingVerses.length) {
+    return { ...supportingVerses[numericSupportingIndex], supporting: true };
+  }
 
   if (Number.isInteger(numericIndex) && numericIndex >= 0 && numericIndex < verses.length) {
     return verses[numericIndex];
   }
 
   if (verseRef) {
-    return verses.find(v => v.ref === verseRef);
+    const primaryVerse = verses.find(v => v.ref === verseRef);
+    if (primaryVerse) return primaryVerse;
+
+    const supportingVerse = supportingVerses.find(v => v.ref === verseRef);
+    if (supportingVerse) return { ...supportingVerse, supporting: true };
   }
 
   return null;
@@ -43,10 +53,11 @@ export function VerseDetail({ navigation, route }) {
   const id = params.id || legacyVerse?.id;
   const idx = params.idx ?? legacyVerse?.idx;
   const verseIndex = params.verseIndex ?? legacyVerse?.verseIndex;
+  const supportingIndex = params.supportingIndex ?? legacyVerse?.supportingIndex;
   const verseRef = params.verseRef || legacyVerse?.verseRef || legacyVerse?.title;
   const t = id ? THREADS[id] : null;
   const seg = t?.segments?.[idx];
-  const verse = findVerse(seg, verseIndex, verseRef);
+  const verse = findVerse(seg, verseIndex, supportingIndex, verseRef);
   const color = themeColor(id);
   const relatedItems = Array.isArray(verse?.related) ? verse.related : verse?.related ? [verse.related] : [];
 
@@ -70,6 +81,7 @@ export function VerseDetail({ navigation, route }) {
 
       <ScrollView contentContainerStyle={styles.content}>
         <View style={[styles.segmentCard, { borderTopColor: color }]}>
+          {verse.supporting ? <Text style={styles.sectionLabel}>Supporting Scripture</Text> : null}
           <View style={styles.cardTitleRow}>
             <Pill color={color} onPress={() => navigation.navigate('ConceptDetail', { conceptId: verse.tag || seg.tag })}>{verse.tag || seg.tag}</Pill>
           </View>
@@ -77,6 +89,7 @@ export function VerseDetail({ navigation, route }) {
           <Text style={styles.listMeta}>{t.name} • {seg.label}</Text>
           <Text style={styles.listTitle}>{seg.title}</Text>
           {verse.text ? <Text style={styles.bodyText}>{verse.text}</Text> : null}
+          {verse.note ? <Text style={styles.bodyText}>{verse.note}</Text> : null}
         </View>
 
         <View style={styles.panel}>

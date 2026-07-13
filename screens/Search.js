@@ -27,6 +27,16 @@ function HighlightedText({ children, query, style }) {
 }
 
 function openResult(navigation, result) {
+  if (result.kind === 'Supporting Scripture') {
+    navigation.navigate('VerseDetail', {
+      id: result.id,
+      idx: result.idx,
+      supportingIndex: result.supportingIndex,
+      verseRef: result.verseRef
+    });
+    return;
+  }
+
   if (result.kind === 'Verse') {
     navigation.navigate('VerseDetail', {
       id: result.id,

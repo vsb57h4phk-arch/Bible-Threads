@@ -44,6 +44,18 @@ export function Thread({ navigation, route }) {
         <Text style={styles.bigLabel}>Verse anchors</Text>
         {(seg.verses || []).map((v, i) => <Verse key={i} v={v} color={color} focused={v.ref === verseRef} />)}
 
+        {(seg.supportingVerses || []).length > 0 && <Text style={styles.bigLabel}>Supporting Scripture</Text>}
+        {(seg.supportingVerses || []).map((item, supportingIndex) => (
+          <TouchableOpacity
+            key={`${item.ref}-${supportingIndex}`}
+            onPress={() => navigation.navigate('VerseDetail', { id, idx, supportingIndex, verseRef: item.ref })}
+            style={styles.anchorItem}
+          >
+            <Text style={styles.kicker}>{item.ref}</Text>
+            <Text style={styles.listMeta}>{item.note}</Text>
+          </TouchableOpacity>
+        ))}
+
         <Text style={styles.bigLabel}>Study lens</Text>
         <View style={styles.panelSoft}>
           {getPrompts(id, idx).map((p, i) => <Text key={i} style={styles.prompt}>• {typeof p === 'string' ? p : (p.note || p.ref || '')}</Text>)}
