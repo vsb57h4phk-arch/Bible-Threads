@@ -32,10 +32,6 @@ export function Threads({ navigation }) {
           </View>
           <Text style={styles.cardDesc}>Trace major milestones, intersections, and supporting Scripture without leaving the thread-first experience.</Text>
         </TouchableOpacity>
-        <View style={styles.notice}>
-          <Text style={styles.noticeTitle}>Native app version</Text>
-          <Text style={styles.noticeText}>No browser wrapper. No horizontal desktop interface. This is rebuilt for phone taps, scrolling, and reading.</Text>
-        </View>
         {order.map(id => {
           const t = THREADS[id];
           const color = themeColor(id);
