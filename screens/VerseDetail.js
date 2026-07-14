@@ -60,6 +60,7 @@ export function VerseDetail({ navigation, route }) {
   const verse = findVerse(seg, verseIndex, supportingIndex, verseRef);
   const color = themeColor(id);
   const relatedItems = Array.isArray(verse?.related) ? verse.related : verse?.related ? [verse.related] : [];
+  const graphConnections = Array.isArray(params.graphConnections) ? params.graphConnections : [];
 
   if (!t || !seg || !verse) {
     return (
@@ -121,6 +122,36 @@ export function VerseDetail({ navigation, route }) {
           <>
             <Text style={styles.bigLabel}>Related References</Text>
             {relatedItems.map((item, relatedIdx) => <RelatedReference key={relatedIdx} item={item} />)}
+          </>
+        ) : null}
+
+        {graphConnections.length > 1 ? (
+          <>
+            <Text style={styles.bigLabel}>Connections at this map station</Text>
+            {graphConnections.map((connection, connectionIndex) => {
+              const isCurrent = connection.id === id && connection.idx === idx && connection.verseIndex === verseIndex;
+              return (
+                <TouchableOpacity
+                  key={`${connection.id}-${connection.idx}-${connection.verseIndex}-${connectionIndex}`}
+                  accessibilityRole="link"
+                  accessibilityLabel={`${connection.verseRef}, ${connection.threadName}, ${connection.lensId}`}
+                  disabled={isCurrent}
+                  onPress={() => navigation.push('VerseDetail', {
+                    id: connection.id,
+                    idx: connection.idx,
+                    verseIndex: connection.verseIndex,
+                    verseRef: connection.verseRef,
+                    graphConnections,
+                    graphStationRef: params.graphStationRef,
+                  })}
+                  style={[styles.anchorItem, isCurrent && styles.focusedVerseCard]}
+                >
+                  <Text style={styles.kicker}>{connection.threadName} • {connection.segmentLabel}</Text>
+                  <Text style={styles.listTitle}>{connection.lensId}</Text>
+                  <Text style={styles.listMeta}>{connection.segmentTitle}{isCurrent ? ' • Current detail' : ''}</Text>
+                </TouchableOpacity>
+              );
+            })}
           </>
         ) : null}
 
