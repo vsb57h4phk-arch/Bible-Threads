@@ -16,6 +16,22 @@ export function Threads({ navigation }) {
         right={<TouchableOpacity onPress={() => navigation.navigate('Search')} style={styles.searchTop}><Text style={styles.searchTopText}>Search</Text></TouchableOpacity>}
       />
       <ScrollView contentContainerStyle={styles.content}>
+        <TouchableOpacity
+          accessibilityRole="button"
+          accessibilityLabel="Open Thread Atlas"
+          accessibilityHint="Opens a visual comparison of all seven biblical threads across Scripture."
+          onPress={() => navigation.navigate('ThreadAtlas')}
+          style={[styles.threadCard, { borderTopColor: '#725D3D' }]}
+        >
+          <View style={styles.cardTitleRow}>
+            <View style={[styles.badge, { borderColor: '#725D3D77' }]}><Text style={styles.badgeText}>✣</Text></View>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.cardTitle}>Thread Atlas</Text>
+              <Text style={styles.cardSub}>Compare seven biblical journeys from Genesis to Revelation.</Text>
+            </View>
+          </View>
+          <Text style={styles.cardDesc}>Trace major milestones, intersections, and supporting Scripture without leaving the thread-first experience.</Text>
+        </TouchableOpacity>
         <View style={styles.notice}>
           <Text style={styles.noticeTitle}>Native app version</Text>
           <Text style={styles.noticeText}>No browser wrapper. No horizontal desktop interface. This is rebuilt for phone taps, scrolling, and reading.</Text>
