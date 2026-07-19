@@ -86,7 +86,6 @@ export function ChapterDetail({ navigation, route }) {
   const observations = list(chapter.observations);
   const threadIds = list(chapter.threads);
   const lensIds = list(chapter.lenses);
-  const conceptIds = list(chapter.concepts);
   const connections = list(chapter.scriptureConnections);
   const connectedPassages = list(chapter.connectedPassages);
   const questions = list(chapter.reflectionQuestions);
@@ -150,22 +149,6 @@ export function ChapterDetail({ navigation, route }) {
                   key={id}
                   onPress={getConcept(id) ? () => navigation.navigate('ConceptDetail', { conceptId: id }) : undefined}
                   accessibilityLabel={getConcept(id) ? `Open ${getConcept(id).title} lens` : undefined}
-                >
-                  {getConcept(id)?.title || id}
-                </Pill>
-              ))}
-            </View>
-          </ChapterSection>
-        ) : null}
-
-        {conceptIds.length > 0 ? (
-          <ChapterSection title="Key Concepts">
-            <View style={detailStyles.pillRow}>
-              {conceptIds.map(id => (
-                <Pill
-                  key={id}
-                  onPress={getConcept(id) ? () => navigation.navigate('ConceptDetail', { conceptId: id }) : undefined}
-                  accessibilityLabel={getConcept(id) ? `Open ${getConcept(id).title} concept` : undefined}
                 >
                   {getConcept(id)?.title || id}
                 </Pill>
