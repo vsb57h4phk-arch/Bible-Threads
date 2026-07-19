@@ -40,6 +40,16 @@ export function Home({ navigation }) {
               </View>
             </View>
           </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => navigation.navigate('ScriptureExplorer')} style={[styles.threadCard, { borderTopColor: '#2b2b2b' }]}>
+            <View style={styles.cardTitleRow}>
+              <View style={styles.badge}><Text style={styles.badgeText}>▤</Text></View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.cardTitle}>Explore Scripture</Text>
+                <Text style={styles.cardSub}>Read chapter guides and trace their connections across Scripture.</Text>
+              </View>
+            </View>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>

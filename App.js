@@ -11,6 +11,8 @@ import { VerseDetail } from './screens/VerseDetail';
 import { ConceptDetail } from './screens/ConceptDetail';
 import { LensMap } from './screens/LensMap';
 import { ThreadAtlas } from './screens/ThreadAtlas';
+import { ScriptureExplorer } from './screens/ScriptureExplorer';
+import { ChapterDetail } from './screens/ChapterDetail';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,6 +30,8 @@ export default function App() {
         <Stack.Screen name="ConceptDetail" component={ConceptDetail} options={{ title: 'Concept Detail' }} />
         <Stack.Screen name="LensMap" component={LensMap} options={{ title: 'Lens Map' }} />
         <Stack.Screen name="ThreadAtlas" component={ThreadAtlas} options={{ title: 'Thread Atlas' }} />
+        <Stack.Screen name="ScriptureExplorer" component={ScriptureExplorer} options={{ title: 'Explore Scripture' }} />
+        <Stack.Screen name="ChapterDetail" component={ChapterDetail} options={{ title: 'Chapter Detail' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
