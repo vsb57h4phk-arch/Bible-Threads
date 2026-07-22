@@ -39,7 +39,9 @@ export function ScriptureExplorer({ navigation }) {
                   <View style={[styles.badge, explorerStyles.bookBadge]}><Text style={styles.badgeText}>▤</Text></View>
                   <View style={{ flex: 1 }}>
                     <Text style={styles.cardTitle}>{book.title}</Text>
-                    <Text style={styles.cardSub}>{book.testament} • {book.chapterCount} chapters</Text>
+                    <Text style={styles.cardSub}>
+                      {[book.testament, book.genre, `${book.chapterCount} chapters`].filter(Boolean).join(' • ')}
+                    </Text>
                   </View>
                   <Text style={explorerStyles.chevron}>{isSelected ? '−' : '+'}</Text>
                 </View>

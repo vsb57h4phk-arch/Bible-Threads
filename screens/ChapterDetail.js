@@ -99,7 +99,7 @@ export function ChapterDetail({ navigation, route }) {
       <ExpoStatusBar style="dark" />
       <Header
         title={chapter.reference || `${book.title} ${chapterNumber}`}
-        subtitleText={[book.testament, book.historicalSetting].filter(Boolean).join(' • ')}
+        subtitleText={[book.testament, book.genre, book.historicalSetting].filter(Boolean).join(' • ')}
         onBack={() => navigation.canGoBack() ? navigation.goBack() : navigation.navigate('ScriptureExplorer')}
       />
 
