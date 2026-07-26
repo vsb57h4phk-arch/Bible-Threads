@@ -25,13 +25,18 @@ export function ScriptureExplorer({ navigation }) {
 
         {AVAILABLE_SCRIPTURE_BOOKS.map(book => {
           const chapters = Object.values(book?.chapters || {}).filter(Boolean);
+          const availableChapterCount = chapters.length;
+          const isPartialBook = availableChapterCount < book.chapterCount;
+          const chapterAvailabilityLabel = isPartialBook
+            ? `${availableChapterCount} of ${book.chapterCount} chapters available`
+            : `${book.chapterCount} chapters`;
           const isSelected = selectedBookId === book.id;
 
           return (
             <View key={book.id} style={[styles.threadCard, { borderTopColor: '#725D3D' }]}>
               <TouchableOpacity
                 accessibilityRole="button"
-                accessibilityLabel={`${book.title}, ${book.chapterCount} chapters`}
+                accessibilityLabel={`${book.title}, ${chapterAvailabilityLabel}`}
                 accessibilityState={{ expanded: isSelected }}
                 onPress={() => setSelectedBookId(isSelected ? null : book.id)}
               >
@@ -40,7 +45,7 @@ export function ScriptureExplorer({ navigation }) {
                   <View style={{ flex: 1 }}>
                     <Text style={styles.cardTitle}>{book.title}</Text>
                     <Text style={styles.cardSub}>
-                      {[book.testament, book.genre, `${book.chapterCount} chapters`].filter(Boolean).join(' • ')}
+                      {[book.testament, book.genre, chapterAvailabilityLabel].filter(Boolean).join(' • ')}
                     </Text>
                   </View>
                   <Text style={explorerStyles.chevron}>{isSelected ? '−' : '+'}</Text>
